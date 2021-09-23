@@ -10,6 +10,7 @@ import {
   UseGuards,
   Logger,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from 'src/auth/user.entity';
@@ -24,7 +25,12 @@ import { TasksService } from './tasks.service';
 export class TasksController {
   private logger = new Logger('TasksController');
 
-  constructor(private tasksService: TasksService) {}
+  constructor(
+    private configService: ConfigService,
+    private tasksService: TasksService,
+  ) {
+    console.log(configService.get('EXAMPLE_ENV'));
+  }
 
   @Get('/:id')
   getTaskById(@Param('id') id: string, @GetUser() user: User): Promise<Task> {
